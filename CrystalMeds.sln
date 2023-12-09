@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalMeds.Server", "CrystalMeds\Server\CrystalMeds.Server.csproj", "{CAB2F826-ACE1-4D67-97E3-313322632BC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalMeds.Server", "CrystalMeds\Server\CrystalMeds.Server.csproj", "{CAB2F826-ACE1-4D67-97E3-313322632BC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalMeds.Client", "CrystalMeds\Client\CrystalMeds.Client.csproj", "{D0DB2CEC-5E84-4BD0-B17E-A5EC9CCEA908}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalMeds.Client", "CrystalMeds\Client\CrystalMeds.Client.csproj", "{D0DB2CEC-5E84-4BD0-B17E-A5EC9CCEA908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrystalMeds.Shared", "CrystalMeds\Shared\CrystalMeds.Shared.csproj", "{7B38B08F-4D1F-4259-9E9D-E1F16DBA5FC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrystalMeds.Shared", "CrystalMeds\Shared\CrystalMeds.Shared.csproj", "{7B38B08F-4D1F-4259-9E9D-E1F16DBA5FC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
