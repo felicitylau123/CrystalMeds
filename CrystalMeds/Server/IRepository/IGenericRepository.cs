@@ -8,6 +8,7 @@ namespace CrystalMeds.Server.IRepository
 {
 	public interface IGenericRepository<T> where T : class
 	{
+		Task<IEnumerable<T>> GetMany(Expression<Func<T, bool>> filter);
 		Task<IList<T>> GetAll(
 			Expression<Func<T, bool>> expression = null,
 			Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -20,5 +21,6 @@ namespace CrystalMeds.Server.IRepository
 		Task Delete(int id);
 		void DeleteRange(IEnumerable<T> entities);
 		void Update(T entity);
+		Task GetMany(Func<object, bool> value);
 	}
 }

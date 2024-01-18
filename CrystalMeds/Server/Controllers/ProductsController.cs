@@ -124,5 +124,20 @@ namespace CrystalMeds.Server.Controllers
 			var make = await _unitOfWork.Products.Get(q => q.ProductId == id);
 			return make != null;
 		}
+
+
+
+
+
+
+
+
+
+		[HttpGet("ByCategory/{categoryId}")]
+		public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory(int categoryId)
+		{
+			var products = await _unitOfWork.Products.Get(q => q.CategoryId == categoryId);
+			return Ok(products);
+		}
 	}
 }

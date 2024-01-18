@@ -21,6 +21,22 @@ namespace CrystalMeds.Server.Repository
 			_db = _context.Set<T>();
 		}
 
+
+
+
+
+
+
+
+		public async Task<IEnumerable<T>> GetMany(Expression<Func<T, bool>> filter)
+		{
+			return await _context.Set<T>().Where(filter).ToListAsync();
+		}
+
+
+
+
+
 		public async Task Delete(int id)
 		{
 			var record = await _db.FindAsync(id);
@@ -82,6 +98,11 @@ namespace CrystalMeds.Server.Repository
 		{
 			_db.Attach(entity);
 			_context.Entry(entity).State = EntityState.Modified;
+		}
+
+		public Task GetMany(Func<object, bool> value)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

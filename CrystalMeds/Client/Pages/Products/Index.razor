@@ -1,0 +1,126 @@
+﻿@page "/products/"
+@using CrystalMeds.Client.Static;
+@using CrystalMeds.Shared.Domain;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">products</h3>
+<a href="/products/create" class="btn btn-secondary">
+	<span class="oi oi-plus"></span>
+	Create New product
+</a>
+@if (Products == null)
+{
+	<div class="alert alert-info">Loading products...</div>
+}
+else
+{
+	<table class="table table-responsive">
+		<thead>
+			<tr>
+				<th>Product</th>
+				<th>Add to Cart</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var product in Products)
+			{
+				<tr>
+					<td>@product.ProductName<br />price: $@product.ProductPrice<br />Description: @product.ProductDescription<br />category: @product.ProductCategory</td>
+					<td>
+						<input type="number" name="quantity" value="1" min="1" />
+						<button type="submit">Add to Cart</button>
+					</td>
+					<td>
+						<a href="/products/view/@product.ProductId" class="btn btn-primary">
+							<span class="oi oi-book"></span>
+						</a>
+						<a href="/products/edit/@product.ProductId" class="btn btn-warning">
+							<span class="oi oi-pencil"></span>
+						</a>
+						<button class="btn btn-danger" @onclick="@(()=>Delete(product.ProductId))">
+							<span class="oi oi-delete"></span>
+						</button>
+						</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	
+	@* <div class="product-list">
+    <h2>Product List</h2>
+	@foreach (var product in Products)
+	{
+		<div class="product-container">
+			<h4>@product.ProductName</h4>
+			<p>Price: $@product.ProductPrice</p>
+			<p>Category: @product.ProductCategory</p>
+
+			<p>@product.ProductCategory</p>
+
+			<div>
+				<form method="post" action="/Cart/AddToCart">
+					<input type="hidden" name="productId" value="@product.ProductId" />
+					<label for="quantity">Quantity:</label>
+					<input type="number" name="quantity" value="1" min="1" />
+					<button type="submit">Add to Cart</button>
+				</form>
+			</div>
+		</div> *@
+	}
+	
+@* 
+	 <table class="table table-responsive">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var product in Products)
+			{
+				<tr>
+					<td>@product.ProductName</td>
+					<td>
+						<a href="/products/view/@product.ProductId" class="btn btn-primary">
+							<span class="oi oi-book"></span>
+						</a>
+						<a href="/products/edit/@product.ProductId" class="btn btn-warning">
+							<span class="oi oi-pencil"></span>
+						</a>
+						<button class="btn btn-danger" @onclick="@(()=>Delete(product.ProductId))">
+							<span class="oi oi-delete"></span>
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>  *@
+}
+@code {
+	private List<Product>? Products;
+	protected async override Task OnInitializedAsync()
+	{
+		Products = await _client.GetFromJsonAsync<List<Product>>($"{Endpoints.ProductsEndpoint}");
+	}
+	async Task Delete(int productId)
+	{
+		if (Products != null)
+		{
+			var product = Products.First(q => q.ProductId == productId);
+			var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {product.ProductName}?");
+			if (confirm)
+			{
+				await _client.DeleteAsync($"{Endpoints.ProductsEndpoint}/{productId}");
+				await OnInitializedAsync();
+			}
+		}
+	}
+} 

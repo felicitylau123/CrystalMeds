@@ -18,7 +18,7 @@ namespace CrystalMeds.Server.Controllers
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
         //public CategoriesController(ApplicationDbContext context)
-        public CategoriesController(IUnitOfWork unitOfWork) 
+        public CategoriesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -27,7 +27,7 @@ namespace CrystalMeds.Server.Controllers
         // GET: api/Categories
         [HttpGet]
         //public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
-        public async Task<IActionResult> getcategories() 
+        public async Task<IActionResult> getcategories()
         {
             //return await _context.Categories.ToListAsync();
             var categories = await _unitOfWork.Categories.GetAll();
@@ -39,7 +39,7 @@ namespace CrystalMeds.Server.Controllers
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
             //var category = await _context.Categories.FindAsync(id);
-            var category = await _unitOfWork.Categories.Get(q=> q.CategoryId == id);
+            var category = await _unitOfWork.Categories.Get(q => q.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
@@ -48,14 +48,14 @@ namespace CrystalMeds.Server.Controllers
             return OK(category);
         }
 
-		private ActionResult<Category> OK(Category category)
-		{
-			throw new NotImplementedException();
-		}
+        private ActionResult<Category> OK(Category category)
+        {
+            throw new NotImplementedException();
+        }
 
-		// PUT: api/Categories/5
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPut("{id}")]
+        // PUT: api/Categories/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.CategoryId)
@@ -73,7 +73,7 @@ namespace CrystalMeds.Server.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 //if (!CategoryExists(id))
-                if(!await CategoryExists(id))
+                if (!await CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -103,7 +103,7 @@ namespace CrystalMeds.Server.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             //var category = await _context.Categories.FindAsync(id);
-            var category = await _unitOfWork.Categories.Get(q=> q.CategoryId == id);
+            var category = await _unitOfWork.Categories.Get(q => q.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
@@ -121,8 +121,37 @@ namespace CrystalMeds.Server.Controllers
         private async Task<bool> CategoryExists(int id)
         {
             //return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
-            var make= await _unitOfWork.Categories.Get(q=> q.CategoryId == id);
+            var make = await _unitOfWork.Categories.Get(q => q.CategoryId == id);
             return make != null;
         }
-    }
+
+
+
+
+
+
+
+
+
+
+
+		[HttpGet("{categoryId}/Products")]
+		public async Task<IActionResult> GetProductsByCategory(int categoryId)
+		{
+			var category = await _unitOfWork.Categories.Get(q => q.CategoryId == categoryId);
+
+			if (category == null)
+			{
+				return NotFound("Category not found");
+			}
+
+			var products = await _unitOfWork.Products.GetMany(q => q.CategoryId == categoryId);
+
+			return Ok(products);
+		}
+
 }
+
+	
+	}
+

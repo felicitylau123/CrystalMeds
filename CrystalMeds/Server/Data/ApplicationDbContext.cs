@@ -1,4 +1,6 @@
-﻿using CrystalMeds.Server.Models;
+﻿using CarRentalManagement.Server.Configurations.Entities;
+using CrystalMeds.Server.Configurations.Entities;
+using CrystalMeds.Server.Models;
 using CrystalMeds.Shared.Domain;
 using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -22,5 +24,19 @@ namespace CrystalMeds.Server.Data
 		public DbSet<Payment> Payments { get; set; }
 		public DbSet<Promotion> Promotions { get; set; }
 		public DbSet<Prescription> Prescriptions { get; set; }
+
+
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			base.OnModelCreating(builder);
+			builder.ApplyConfiguration(new CategorySeedConfiguration());
+			builder.ApplyConfiguration(new ProductSeedConfiguration());
+			builder.ApplyConfiguration(new RoleSeedConfiguration());
+			builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+			builder.ApplyConfiguration(new UserSeedConfiguration());
+
+
+		}
 	}
+	
 }

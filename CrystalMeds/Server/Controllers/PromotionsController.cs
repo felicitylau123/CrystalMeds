@@ -9,6 +9,7 @@ using CrystalMeds.Server.Data;
 using CrystalMeds.Shared.Domain;
 using CrystalMeds.Server.IRepository;
 
+
 namespace CrystalMeds.Server.Controllers
 {
 	[Route("api/[controller]")]

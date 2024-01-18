@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CrystalMeds.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddApplicationTables : Migration
+    public partial class newdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,8 +60,7 @@ namespace CrystalMeds.Server.Migrations
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,6 +252,7 @@ namespace CrystalMeds.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductPrice = table.Column<float>(type: "real", nullable: true),
+                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -349,6 +351,68 @@ namespace CrystalMeds.Server.Migrations
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", null, "Administrator", "ADMINISTRATOR" },
+                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "656a7701-7973-49bb-adc9-793f12bdcfb2", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAECuuMJFenXmlu+HLl8PWaphTdYs5lCpwy6vQxngLfjkP1KGfqyQz03AOttWT0DIjjA==", null, false, "eb777c5a-b062-4616-bcd2-abcd95e922f5", false, "admin@localhost.com" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "skin care" },
+                    { 2, "First Aid" },
+                    { 3, "Pain Relief" },
+                    { 4, "Medicine(description needed)" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "3781efa7-66dc-47f0-860f-e506d04102e4" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "CategoryId", "ProductCategory", "ProductDescription", "ProductName", "ProductPrice" },
+                values: new object[,]
+                {
+                    { 1, 1, "skin care", "Neutrogena Hydro Boost Water Gel Cleanser", "Crystal meds skin cleanser", 15f },
+                    { 2, 1, "skin care", "Clinique Dramatically Different Moisturizing Lotion+", "crystal meds skin moisturizers", 22f },
+                    { 3, 1, "skin care", "EltaMD UV Clear Broad-Spectrum SPF 46", "crystal meds sun screen", 12f },
+                    { 4, 1, "skin care", "The Ordinary Niacinamide 10% + Zinc 1%", "crystal meds serum", 20f },
+                    { 5, 1, "skin care", "Skin Perfecting 2% BHA Liquid Exfoliant", "crystal meds exfoliants", 30f },
+                    { 6, 1, "skin care", "for a healthy and glow skin", "crystal meds charcoal mask", 30f },
+                    { 7, 2, "first aid", "and-Aid for covering small cuts and wounds.", "crystal meds adhesive bandages", 5f },
+                    { 8, 2, "first aid", "highest quality cotton for applying ointments or cleaning small areas.", "crystal meds cotton roll", 5f },
+                    { 9, 2, "first aid", "Used for cleaning wounds to prevent infection.", "crystal meds antiseptic solution", 13f },
+                    { 10, 2, "first aid", "eye cream with the essence of avocado for better result", "crystal meds eye cream", 10f },
+                    { 11, 2, "first aid", "high quality gloves. available in all sizes", "crystal meds medical gloves", 15f },
+                    { 12, 3, "pain relief", "relieves pains associated with bones and muscles", "crystal meds pain relief spray", 10f },
+                    { 13, 3, "pain relief", "releives strong headache. faster action.", "crystal meds headache balm", 10f },
+                    { 14, 4, "medicine(with prescriptions)", "Used for mild to moderate pain and to reduce fever. It's generally considered safe when taken as directed, but excessive use can lead to liver damage.", "Acetaminophen (Tylenol)", 20f },
+                    { 15, 4, "medicine(with prescriptions)", " formulated specifically for migraines may contain a combination of pain relievers and caffeine.", "Advil Migraine", 18f },
+                    { 16, 4, "medicine(with prescriptions)", "Over-the-counter muscle relaxants can help alleviate muscle spasms and tension. ", "Zanaflex (Tizanidine)", 15f },
+                    { 17, 4, "medicine(with prescriptions)", "help relieve sneezing, runny nose, and itchy or watery eyes. It may cause drowsiness.", "Robaxin (Methocarbamol)", 15f },
+                    { 18, 4, "medicine(with prescriptions)", "help relieve sneezing, runny nose, and itchy or watery eyes. It may cause drowsiness.", "Benadryl", 15f },
+                    { 19, 4, "medicine(with prescriptions)", "Non-drowsy options for allergy symptoms that may accompany a cold.", "Zyrtec", 15f },
+                    { 20, 4, "medicine(with prescriptions)", "for fever and associated symptoms", "Aleve", 17f },
+                    { 21, 4, "medicine(with prescriptions)", "reduces fever", "panadol", 10f },
+                    { 22, 4, "medicine(with prescriptions)", " Stimulate the pancreas to release more insulin.", "Glibenclamide", 10f },
+                    { 23, 4, "medicine(with prescriptions)", " Reduce glucose reabsorption in the kidneys, leading to increased glucose excretion in the urine.", "Canagliflozin", 10f },
+                    { 24, 4, "medicine(with prescriptions)", "to improve urine flow and reduce symptoms associated with BPH.", "Flomax", 15f },
+                    { 25, 4, "medicine(with prescriptions)", "for severe pain due to kidney stone", "Oxycodone", 15f }
                 });
 
             migrationBuilder.CreateIndex(
