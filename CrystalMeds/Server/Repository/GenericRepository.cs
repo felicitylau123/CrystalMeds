@@ -1,5 +1,6 @@
 ﻿using CrystalMeds.Server.Data;
 using CrystalMeds.Server.IRepository;
+using CrystalMeds.Shared.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -104,5 +105,6 @@ namespace CrystalMeds.Server.Repository
 		{
 			throw new NotImplementedException();
 		}
+
 	}
 }

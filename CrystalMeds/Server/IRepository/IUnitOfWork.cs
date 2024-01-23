@@ -11,6 +11,7 @@ namespace CrystalMeds.Server.IRepository
 	public interface IUnitOfWork : IDisposable
 	{
 		Task Save(HttpContext httpContext);
+
 		IGenericRepository<Category> Categories { get; }
 		IGenericRepository<Product> Products { get; }
 		IGenericRepository<Customer> Customers { get; }

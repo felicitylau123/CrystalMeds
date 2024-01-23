@@ -45,7 +45,7 @@ namespace CrystalMeds.Server.Controllers
 				return NotFound();
 			}
 
-			return OK(Product);
+			return Ok(Product);
 		}
 
 		private ActionResult<Product> OK(Product Product)
@@ -124,13 +124,6 @@ namespace CrystalMeds.Server.Controllers
 			var make = await _unitOfWork.Products.Get(q => q.ProductId == id);
 			return make != null;
 		}
-
-
-
-
-
-
-
 
 
 		[HttpGet("ByCategory/{categoryId}")]

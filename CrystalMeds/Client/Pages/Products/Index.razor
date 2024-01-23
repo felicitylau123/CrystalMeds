@@ -8,6 +8,7 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@implements IDisposable
 
 <h3 class="card-title">products</h3>
 <a href="/products/create" class="btn btn-secondary">
@@ -17,10 +18,11 @@
 @if (Products == null)
 {
 	<div class="alert alert-info">Loading products...</div>
+
 }
 else
 {
-	<table class="table table-responsive">
+	<table class="table table-responsive" id="productsTable">
 		<thead>
 			<tr>
 				<th>Product</th>
@@ -39,7 +41,7 @@ else
 					</td>
 					<td>
 						<a href="/products/view/@product.ProductId" class="btn btn-primary">
-							<span class="oi oi-book"></span>
+							<span class="oi oi-eye"></span>
 						</a>
 						<a href="/products/edit/@product.ProductId" class="btn btn-warning">
 							<span class="oi oi-pencil"></span>
@@ -53,56 +55,7 @@ else
 		</tbody>
 	</table>
 	
-	@* <div class="product-list">
-    <h2>Product List</h2>
-	@foreach (var product in Products)
-	{
-		<div class="product-container">
-			<h4>@product.ProductName</h4>
-			<p>Price: $@product.ProductPrice</p>
-			<p>Category: @product.ProductCategory</p>
 
-			<p>@product.ProductCategory</p>
-
-			<div>
-				<form method="post" action="/Cart/AddToCart">
-					<input type="hidden" name="productId" value="@product.ProductId" />
-					<label for="quantity">Quantity:</label>
-					<input type="number" name="quantity" value="1" min="1" />
-					<button type="submit">Add to Cart</button>
-				</form>
-			</div>
-		</div> *@
-	}
-	
-@* 
-	 <table class="table table-responsive">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var product in Products)
-			{
-				<tr>
-					<td>@product.ProductName</td>
-					<td>
-						<a href="/products/view/@product.ProductId" class="btn btn-primary">
-							<span class="oi oi-book"></span>
-						</a>
-						<a href="/products/edit/@product.ProductId" class="btn btn-warning">
-							<span class="oi oi-pencil"></span>
-						</a>
-						<button class="btn btn-danger" @onclick="@(()=>Delete(product.ProductId))">
-							<span class="oi oi-delete"></span>
-						</button>
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>  *@
 }
 @code {
 	private List<Product>? Products;
@@ -123,4 +76,14 @@ else
 			}
 		}
 	}
-} 
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		await js.InvokeVoidAsync("AddDataTable", "#productsTable");
+	}
+	public void Dispose()
+	{
+		js.InvokeVoidAsync("DataTablesDispose", "#productsTable");
+	}
+
+	}
+	

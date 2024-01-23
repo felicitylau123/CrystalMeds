@@ -48,16 +48,14 @@
 </table>
 
 @code {
-        
+
 
     private List<Product> Products { get; set; }
-
     [Inject]
     private HttpClient HttpClient { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        // Fetch products for Category ID 1
         var categoryId = 1;
         var response = await HttpClient.GetFromJsonAsync<List<Product>>($"/api/Categories/{categoryId}/Products");
 
@@ -67,9 +65,10 @@
         }
         else
         {
-            // Handle the case where products are not found
+            Console.WriteLine("No products found or API response is null.");
         }
     }
+
 }
 
-    }
+    
