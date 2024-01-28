@@ -45,7 +45,7 @@ namespace CrystalMeds.Server.Controllers
 				return NotFound();
 			}
 
-			return OK(Order);
+			return Ok(Order);
 		}
 
 		private ActionResult<Order> OK(Order Order)

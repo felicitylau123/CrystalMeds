@@ -45,7 +45,7 @@ namespace CrystalMeds.Server.Controllers
                 return NotFound();
             }
 
-            return OK(category);
+            return Ok(category);
         }
 
         private ActionResult<Category> OK(Category category)
@@ -98,6 +98,7 @@ namespace CrystalMeds.Server.Controllers
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
+
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
@@ -135,20 +136,20 @@ namespace CrystalMeds.Server.Controllers
 
 
 
-		[HttpGet("{categoryId}/Products")]
-		public async Task<IActionResult> GetProductsByCategory(int categoryId)
-		{
-			var category = await _unitOfWork.Categories.Get(q => q.CategoryId == categoryId);
+		//[HttpGet("{categoryId}/Products")]
+		//public async Task<IActionResult> GetProductsByCategory(int categoryId)
+		//{
+		//	var category = await _unitOfWork.Categories.Get(q => q.CategoryId == categoryId);
 
-			if (category == null)
-			{
-				return NotFound("Category not found");
-			}
+		//	if (category == null)
+		//	{
+		//		return NotFound("Category not found");
+		//	}
 
-			var products = await _unitOfWork.Products.GetMany(q => q.CategoryId == categoryId);
+		//	var products = await _unitOfWork.Products.GetMany(q => q.CategoryId == categoryId);
 
-			return Ok(products);
-		}
+		//	return Ok(products);
+		//}
 
 }
 

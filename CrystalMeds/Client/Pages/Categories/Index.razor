@@ -1,4 +1,4 @@
-﻿@page "/category/"
+﻿@* @page "/category/"
 @using CrystalMeds.Client.Static;
 @using CrystalMeds.Shared.Domain;
 @using Microsoft.AspNetCore.Authorization;
@@ -9,7 +9,11 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
-<h3 class="card-title">products</h3>
+<h3 class="card-title">Categories</h3>
+<a href="/category/create" class="btn btn-secondary">
+	<span class="oi oi-plus"></span>
+	Create New Category
+</a>
 
 @if (Categories == null)
 {
@@ -20,7 +24,7 @@ else
 	<table class="table table-responsive">
 		<thead>
 			<tr>
-				<th>category</th>
+				<th>Category</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -37,7 +41,7 @@ else
 					</td>
 					<td>
 						<a href="/categories/view/@category.CategoryId" class="btn btn-primary">
-							<span class="oi oi-book"></span>
+							<span class="oi oi-eye"></span>
 						</a>
 						<a href="/categories/edit/@category.CategoryId" class="btn btn-warning">
 							<span class="oi oi-pencil"></span>
@@ -50,7 +54,7 @@ else
 			}
 		</tbody>
 	</table>   
-
+ *@
 	@* <div class="product-list">
     <h2>Product List</h2>
 	@foreach (var product in Products)
@@ -102,13 +106,13 @@ else
 		</tbody>
 	</table>  *@
 }
- @code {
+ @* @code {
 	private List<Category>? Categories;
 	protected async override Task OnInitializedAsync()
 	{
 		Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
-	}
-	// async Task Delete(int categoryId)
+	} *@
+	@* // async Task Delete(int categoryId)
 	// {
 	// 	if (Categories != null)
 	// 	{
@@ -133,9 +137,9 @@ else
 	{
 		if (Categories != null)
 		{
-			var category = Categories.FirstOrDefault(q => q.CategoryId == categoryId);
-			if (category != null)
-			{
+				var category = Categories.FirstOrDefault(q => q.CategoryId == categoryId);
+			// if (category != null)
+			// {
 				var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {category.CategoryName}?");
 				if (confirm)
 				{
@@ -145,4 +149,180 @@ else
 			}
 		}
 	}
-}  
+}   *@
+@* 
+@page "/category/"
+@using CrystalMeds.Client.Static;
+@using CrystalMeds.Shared.Domain;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@inject NavigationManager Navigation
+@inject NavigationManager _navManager
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@implements IDisposable
+
+<h3 class="card-title">Categories</h3>
+<a href="/categories/create" class="btn btn-secondary">
+	<span class="oi oi-plus"></span>
+	Create New Category
+</a>
+@if (Categories == null)
+{
+	<div class="alert alert-info">Loading categories...</div>
+}
+else
+{
+	<table class="table table-responsive" id="categoriesTable">
+		<thead>
+			<tr>
+				<th>Category Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var category in Categories)
+			{
+				<tr>
+					<td>@category.CategoryName</td>
+					<td>
+						<a href="/categories/view/@category.CategoryId" class="btn btn-primary">
+							<span class="oi oi-eye"></span>
+						</a>
+						<a href="/categories/edit/@category.CategoryId" class="btn btn-warning">
+							<span class="oi oi-pencil"></span>
+						</a>
+						<button class="btn btn-danger" @onclick="@(() => Delete(category.CategoryId))">
+							<span class="oi oi-delete"></span>
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private List<Category>? Categories;
+
+	protected async override Task OnInitializedAsync()
+	{
+		Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
+	}
+
+	async Task Delete(int categoryId)
+	{
+		if (Categories != null)
+		{
+			var category = Categories.First(q => q.CategoryId == categoryId);
+			var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {category.CategoryName}?");
+			if (confirm)
+			{
+				await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/{categoryId}");
+				await OnInitializedAsync();
+			}
+		}
+	}
+
+
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		await js.InvokeVoidAsync("AddDataTable", "#categoriesTable");
+	}
+
+	public void Dispose()
+	{
+		js.InvokeVoidAsync("DataTablesDispose", "#categoriesTable");
+	}
+}
+
+ *@
+
+@page "/category/"
+@using CrystalMeds.Client.Static;
+@using CrystalMeds.Shared.Domain;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.JSInterop;
+@using System.Net.Http.Json;
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@implements IDisposable
+
+<h3 class="card-title">Categories</h3>
+<a href="/categories/create" class="btn btn-secondary">
+	<span class="oi oi-plus"></span>
+	Create New categories
+</a>
+@if (Categories == null)
+{
+	<div class="alert alert-info">Loading categories...</div>
+
+}
+else
+{
+	<table class="table table-responsive" id="categoriesTable">
+		<thead>
+			<tr>
+				<th>CategoryName</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (var category in Categories)
+			{
+				<tr>
+					<td>@category.CategoryName
+					</td>
+					<td>
+						<a href="/categories/view/@category.CategoryId" class="btn btn-primary">
+							<span class="oi oi-eye"></span>
+						</a>
+						<a href="/categories/edit/@category.CategoryId" class="btn btn-warning">
+							<span class="oi oi-pencil"></span>
+						</a>
+						<button class="btn btn-danger" @onclick="@(() => Delete(category.CategoryId))">
+							<span class="oi oi-delete"></span>
+						</button>
+
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+
+}
+@code {
+	private List<Category>? Categories;
+	protected async override Task OnInitializedAsync()
+	{
+		Categories = await _client.GetFromJsonAsync<List<Category>>($"{Endpoints.CategoriesEndpoint}");
+	}
+	async Task Delete(int CategoryId)
+	{
+		if (Categories != null)
+		{
+			var category = Categories.First(q => q.CategoryId == CategoryId);
+			var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {category.CategoryId}?");
+			if (confirm)
+			{
+				await _client.DeleteAsync($"{Endpoints.CategoriesEndpoint}/{CategoryId}");
+				await OnInitializedAsync();
+			}
+		}
+	}
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		await js.InvokeVoidAsync("AddDataTable", "#categoriesTable");
+	}
+	public void Dispose()
+	{
+		js.InvokeVoidAsync("DataTablesDispose", "#categoriesTable");
+	}
+}

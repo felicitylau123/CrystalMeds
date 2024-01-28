@@ -15,6 +15,7 @@ namespace CrystalMeds.Client.Static
 		public static readonly string CustomersEndpoint = $"{Prefix}/customers";
 		public static readonly string PromotionsEndpoint = $"{Prefix}/promotions";
 		public static readonly string ProductsEndpoint = $"{Prefix}/products";
-	}
+        public static readonly string CartItemsEndpoint = $"{Prefix}/cartItems";
+    }
 }
 

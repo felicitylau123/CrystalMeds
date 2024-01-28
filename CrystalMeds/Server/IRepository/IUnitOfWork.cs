@@ -1,4 +1,5 @@
-﻿using CrystalMeds.Shared.Domain;
+﻿using CrystalMeds.Client.Pages.Cart;
+using CrystalMeds.Shared.Domain;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,6 @@ namespace CrystalMeds.Server.IRepository
 		IGenericRepository<Payment> Payments { get; }
 		IGenericRepository<Prescription> Prescriptions { get; }
 		IGenericRepository<Promotion> Promotions { get; }
-	}
+        IGenericRepository<CartItem> CartItems { get; }
+    }
 }

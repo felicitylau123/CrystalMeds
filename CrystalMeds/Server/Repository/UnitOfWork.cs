@@ -25,8 +25,9 @@ namespace CrystalMeds.Server.Repository
 		private IGenericRepository<Payment> _payments;
 		private IGenericRepository<Promotion> _promotions;
 		private IGenericRepository<Prescription> _prescriptions;
+        private IGenericRepository<CartItem> _cartItems;
 
-		private UserManager<ApplicationUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
 
 		public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
 		{
@@ -48,8 +49,10 @@ namespace CrystalMeds.Server.Repository
 			=> _prescriptions ??= new GenericRepository<Prescription>(_context);
 		public IGenericRepository<Promotion> Promotions
 			=> _promotions ??= new GenericRepository<Promotion>(_context);
+        public IGenericRepository<CartItem> CartItems
+            => _cartItems ??= new GenericRepository<CartItem>(_context);
 
-		public void Dispose()
+        public void Dispose()
 		{
 			_context.Dispose();
 			GC.SuppressFinalize(this);

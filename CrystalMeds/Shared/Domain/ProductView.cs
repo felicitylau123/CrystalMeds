@@ -6,17 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CrystalMeds.Shared.Domain
-{
-	public class Product
+{ 
+	public class ProductViewModel
 	{
-
-
 		public int ProductId { get; set; }
-		public string? ProductName { get; set; }
+		public string ProductName { get; set; }
 		public float ProductPrice { get; set; }
 		public string ProductDescription { get; set; }
-		public string? ProductCategory { get; set; }
-		public int CategoryId { get; set; }
-		public virtual Category? Category { get; set; }
+		public string ProductCategory { get; set; }
+		public int Quantity { get; set; } // Add the Quantity property
 	}
 }

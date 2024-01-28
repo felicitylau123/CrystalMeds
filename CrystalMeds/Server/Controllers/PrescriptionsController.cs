@@ -45,7 +45,7 @@ namespace CrystalMeds.Server.Controllers
 				return NotFound();
 			}
 
-			return OK(Prescription);
+			return Ok(Prescription);
 		}
 
 		private ActionResult<Prescription> OK(Prescription Prescription)
