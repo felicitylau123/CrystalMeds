@@ -202,7 +202,6 @@ else
 		<thead>
 			<tr>
 				<th>Product</th>
-				<th>Add to Cart</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -211,10 +210,7 @@ else
 			{
 				<tr>
 					<td>@product.ProductName<br />price: $@product.ProductPrice<br />Description: @product.ProductDescription<br />category: @product.ProductCategory</td>
-					<td>
-                        <input type="number" name="quantity" value="1" min="1" />
-						<button class="btn btn-success" @onclick="@(() => AddToCart(product))">Add to Cart</button>
-					</td>
+				
 					<td>
 						<a href="/products/view/@product.ProductId" class="btn btn-primary">
 							<span class="oi oi-eye"></span>

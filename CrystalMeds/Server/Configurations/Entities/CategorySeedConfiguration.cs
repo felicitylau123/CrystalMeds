@@ -30,7 +30,7 @@ new Category
  new Category
 {
     CategoryId = 4,
-    CategoryName = "Medicine(description needed)",
+    CategoryName = "Medicine(prescription needed)",
 }
 );
 

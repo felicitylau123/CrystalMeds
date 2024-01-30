@@ -12,7 +12,7 @@
 	<div class="form-group">
 		<label>UserName: </label>
 		<div>
-			<InputText @bind-Value="customer.UserName" class="form-control"/>
+			<InputText @bind-Value="customer.UserName" class="form-control" />
 			<ValidationMessage For="@(() => customer.UserName)" />
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 
 	private async Task CreateCustomer()
 	{
-		
+
 		await _client.PostAsJsonAsync(Endpoints.CustomersEndpoint, customer);
 		_navManager.NavigateTo("/customers/");
 	}

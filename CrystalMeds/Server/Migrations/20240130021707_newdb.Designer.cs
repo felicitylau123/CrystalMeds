@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrystalMeds.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240116033401_newdb")]
+    [Migration("20240130021707_newdb")]
     partial class newdb
     {
         /// <inheritdoc />
@@ -100,7 +100,7 @@ namespace CrystalMeds.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "656a7701-7973-49bb-adc9-793f12bdcfb2",
+                            ConcurrencyStamp = "d45b61b3-246d-4a32-b7ca-661beb88c335",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -108,9 +108,9 @@ namespace CrystalMeds.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECuuMJFenXmlu+HLl8PWaphTdYs5lCpwy6vQxngLfjkP1KGfqyQz03AOttWT0DIjjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO5dWcqTMxJZtnA+BYiiKgzSIgVFEBYIkaxzPU9i78OZUHsqbNqOglyHwbnyGKEISw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb777c5a-b062-4616-bcd2-abcd95e922f5",
+                            SecurityStamp = "3284b382-98d9-4cea-a707-dff57bc0125d",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -150,7 +150,7 @@ namespace CrystalMeds.Server.Migrations
                         new
                         {
                             CategoryId = 4,
-                            CategoryName = "Medicine(description needed)"
+                            CategoryName = "Medicine(prescription needed)"
                         });
                 });
 
@@ -168,9 +168,6 @@ namespace CrystalMeds.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -181,8 +178,6 @@ namespace CrystalMeds.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Customers");
                 });
@@ -277,12 +272,13 @@ namespace CrystalMeds.Server.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("ProductPrice")
+                    b.Property<float>("ProductPrice")
                         .HasColumnType("real");
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
 
                     b.ToTable("Products");
 
@@ -832,17 +828,6 @@ namespace CrystalMeds.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CrystalMeds.Shared.Domain.Customer", b =>
-                {
-                    b.HasOne("CrystalMeds.Shared.Domain.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("CrystalMeds.Shared.Domain.Order", b =>
                 {
                     b.HasOne("CrystalMeds.Shared.Domain.Product", "Product")
@@ -879,8 +864,8 @@ namespace CrystalMeds.Server.Migrations
             modelBuilder.Entity("CrystalMeds.Shared.Domain.Product", b =>
                 {
                     b.HasOne("CrystalMeds.Shared.Domain.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                        .WithOne("Product")
+                        .HasForeignKey("CrystalMeds.Shared.Domain.Product", "CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -940,7 +925,7 @@ namespace CrystalMeds.Server.Migrations
 
             modelBuilder.Entity("CrystalMeds.Shared.Domain.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }
