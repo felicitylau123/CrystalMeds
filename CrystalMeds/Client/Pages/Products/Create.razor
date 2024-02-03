@@ -69,10 +69,10 @@
 
 	private async Task CreateProduct()
 	{
-		// Ensure that the selected category is not null
+		
 		if (product.CategoryId != null)
 		{
-			// Retrieve the selected category from the Categories list
+			
 			var selectedCategory = Categories.FirstOrDefault(c => c.CategoryId == product.CategoryId);
 
 			product.ProductCategory = selectedCategory?.CategoryName;

@@ -12,7 +12,12 @@ namespace CrystalMeds.Shared.Domain
 
 
 		public int ProductId { get; set; }
+
+		[Required]
+		[StringLength(100, MinimumLength = 2, ErrorMessage = " Name doesnot meet length requirements")]
 		public string? ProductName { get; set; }
+		[Required]
+		[DataType(DataType.Currency)]
 		public float ProductPrice { get; set; }
 		public string ProductDescription { get; set; }
 		public string? ProductCategory { get; set; }

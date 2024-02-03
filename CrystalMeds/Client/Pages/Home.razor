@@ -1,46 +1,19 @@
-﻿@using System.Security.Claims
+﻿@page "/"
+@using System.Security.Claims
+@inject NavigationManager Navigation
 @using Microsoft.AspNetCore.Components.Authorization
-@page "/"
 
-<PageTitle>Index</PageTitle>
+<h1>Welcome to Crystal Meds</h1>
 
-<h1>
-    @if (user != null && user.Identity.IsAuthenticated)
-    {
-        <span>Hello, @user.Identity.Name!</span>
-        <h2>Welcome to Crystal Meds!</h2>
-    }
-    else
-    {
-        <span>Hello, Customers!</span>
-    }
-</h1>
+<p>
+    A perfect place for all your healthCare needs.
+</p>
 
-@if (user != null && user.Identity.IsAuthenticated)
-{
-    <p> </p>
-}
-else
-{
-    <h2>Welcome to Crystal Meds!</h2>
-    <p>You are not logged in.</p>
-}
+<footer>
+    <p>&copy; 2024 crystal meds. All rights reserved. | </p>
+</footer>
 
-
-<SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
-    private ClaimsPrincipal user;
 
-    // This method will be invoked when the component is initialized
-    protected override async Task OnInitializedAsync()
-    {
-        // Retrieve the user information
-        var authState = await AuthenticationStateProvider;
-        user = authState.User;
-    }
-
-    // This method is injected with AuthenticationStateProvider using cascading authentication
-    [CascadingParameter] private Task<AuthenticationState> AuthenticationStateProvider { get; set; }
 }
-

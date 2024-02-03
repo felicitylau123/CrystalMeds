@@ -244,6 +244,7 @@ else
 @page "/category/"
 @using CrystalMeds.Client.Static;
 @using CrystalMeds.Shared.Domain;
+@using CrystalMeds.Client.Services
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.JSInterop;
@@ -252,6 +253,9 @@ else
 @inject IJSRuntime js
 @attribute [Authorize]
 @implements IDisposable
+@inject HttpInterceptorService _interceptor
+
+
 
 <h3 class="card-title">Categories</h3>
 <a href="/categories/create" class="btn btn-secondary">
@@ -323,6 +327,7 @@ else
 	}
 	public void Dispose()
 	{
+		_interceptor.DisposeEvent();
 		js.InvokeVoidAsync("DataTablesDispose", "#categoriesTable");
 	}
 }
